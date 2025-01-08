@@ -1,13 +1,20 @@
 import { _fontFamily } from '@/components/ultis';
 import { Tabs } from 'expo-router';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import { Octicons } from "@expo/vector-icons"
-import TabButton from '@/components/tabs/TabButton';
+import TabBar from '@/components/tabs/TabBar';
 
-const iconSize = 18
+interface TabScreenData {
+  name: string,
+  icon?: any
+}
 
 export default function TabLayout() {
-  
+  const iconSize = 18
+  const tabs : TabScreenData[] = [
+    { name: '(home)', icon: 'home' },
+    { name: 'settings', icon: 'code-of-conduct' },
+  ]
 
   return (
     <Tabs 
@@ -15,23 +22,19 @@ export default function TabLayout() {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: styles.tabBarStyle,
-        // tabBarActiveBackgroundColor: 'gray',
-        animation: 'shift'
+        animation: 'shift',
       }}
+      tabBar={(props) => <TabBar {...props} />}
     >
-      <Tabs.Screen 
-        name="(home)" 
-        options={{
-          tabBarIcon: () => <Octicons name="home" size={ iconSize } color="black" />,
-          tabBarButton: (props) => <TabButton {...props} />
-        }}
-      />
-      <Tabs.Screen 
-        name="settings" 
-        options={{
-          tabBarIcon: () => <Octicons name="code-of-conduct" size={ iconSize } color="black" />
-        }}
-      />
+      { tabs.map((tab, index) => (
+        <Tabs.Screen
+          key={ index }
+          name={ tab.name } 
+          options={{
+            tabBarIcon: () => <Octicons name={ tab.icon } size={ iconSize } color="black" />,
+          }}
+        />
+      ))}
     </Tabs>
   );
 }
