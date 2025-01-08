@@ -1,45 +1,46 @@
+import { _fontFamily } from '@/components/ultis';
 import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Octicons } from "@expo/vector-icons"
+import TabButton from '@/components/tabs/TabButton';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+const iconSize = 18
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  
 
   return (
-    <Tabs
+    <Tabs 
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
+        tabBarShowLabel: false,
+        tabBarStyle: styles.tabBarStyle,
+        // tabBarActiveBackgroundColor: 'gray',
+        animation: 'shift'
+      }}
+    >
+      <Tabs.Screen 
+        name="(home)" 
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: () => <Octicons name="home" size={ iconSize } color="black" />,
+          tabBarButton: (props) => <TabButton {...props} />
         }}
       />
-      <Tabs.Screen
-        name="explore"
+      <Tabs.Screen 
+        name="settings" 
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: () => <Octicons name="code-of-conduct" size={ iconSize } color="black" />
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBarStyle: {
+    borderRadius: 100
+  },
+  tabBarLabelStyle: {
+    fontFamily: _fontFamily
+  }
+})
