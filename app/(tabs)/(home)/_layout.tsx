@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import CustomStack from '@/components/stacks/CustomStack';
 
 export default function HomeLayout() {
   return (
@@ -11,7 +12,9 @@ export default function HomeLayout() {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
-      }}>
+        header: (props) => <CustomStack {...props} /> 
+      }}
+    >
       <Stack.Screen name="index" />
       <Stack.Screen name="details" />
     </Stack>

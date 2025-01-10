@@ -19,12 +19,15 @@ interface LinkNode extends TextNode {
   href?: any
 }
 
+// Global
+export const _padL = 23
+export const _padT = 20
 export const _fontFamily = 'SourGummy-Regular'
 const fontFamilyModule = require(`@/assets/fonts/SourGummy-Regular.ttf`)
 
 export function _Text(node: TextNode) {
   const [ loaded, error ] = useFonts({
-    _fontFamily: fontFamilyModule
+    [_fontFamily]: fontFamilyModule
   })
 
   useEffect(() => {

@@ -1,13 +1,17 @@
-import { Link } from 'expo-router';
 import { View, StyleSheet } from 'react-native';
 import { _Text, _Link, _fontFamily } from '@/components/ultis';
+import { PaperProvider } from "react-native-paper"
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <_Text>Homedsfsdf</_Text>
-      <_Link href="/details">Details</_Link>
-    </View>
+    <PaperProvider theme={{
+      dark: true
+    }}>
+      <View style={styles.container}>
+        <_Text>Homedsfsdf</_Text>
+        <_Link href="/details">Details</_Link>
+      </View>
+    </PaperProvider>
   );
 }
 
