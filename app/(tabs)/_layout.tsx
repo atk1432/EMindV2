@@ -1,19 +1,40 @@
 import { _fontFamily } from '@/components/ultis';
 import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
-import { Octicons } from "@expo/vector-icons"
+import { AntDesign, Ionicons, Octicons } from "@expo/vector-icons"
 import TabBar from '@/components/tabs/TabBar';
 
 interface TabScreenData {
   name: string,
-  icon?: any
+  icon?: any,
+  title?: string
 }
 
+const iconSize = 18
+const iconColor = 'black'
+
 export default function TabLayout() {
-  const iconSize = 18
-  const tabs : TabScreenData[] = [
-    { name: '(home)', icon: 'home' },
-    { name: 'settings', icon: 'code-of-conduct' },
+  const tabs : TabScreenData[] = [ 
+    { 
+      name: '(home)', 
+      icon: <AntDesign name="home" size={iconSize} color={iconColor} />,
+      title: "Home"
+    },
+    { 
+      name: 'chat', 
+      icon: <Ionicons name="chatbubble-ellipses-outline" size={iconSize} color={iconColor} />,
+      title: "Trò chuyện"
+    },  
+    { 
+      name: 'chart', 
+      icon: <AntDesign name="barschart" size={iconSize} color={iconColor} />,
+      title: "Biểu đồ"
+    },
+    { 
+      name: 'user', 
+      icon: <AntDesign name="user" size={iconSize} color={iconColor} /> ,
+      title: "Profile"
+    },
   ]
 
   return (
@@ -23,6 +44,7 @@ export default function TabLayout() {
         tabBarShowLabel: false,
         tabBarStyle: styles.tabBarStyle,
         animation: 'shift',
+
       }}
       tabBar={(props) => <TabBar {...props} />}
     >
@@ -31,7 +53,9 @@ export default function TabLayout() {
           key={ index }
           name={ tab.name } 
           options={{
-            tabBarIcon: () => <Octicons name={ tab.icon } size={ iconSize } color="black" />,
+            tabBarIcon: () => tab.icon,
+            tabBarLabel: tab.title,
+            headerTitle: tab.title
           }}
         />
       ))}

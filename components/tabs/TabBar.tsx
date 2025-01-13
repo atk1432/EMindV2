@@ -5,22 +5,27 @@ import { Octicons } from "@expo/vector-icons";
 
 
 export default function TabBar(props: BottomTabBarProps) {
-  var state = props.state
-  var descriptors = props.descriptors
-  var navigation = props.navigation
+  const state = props.state
+  const descriptors = props.descriptors
+  const navigation = props.navigation
+  var propIcon : {
+    focused: boolean,
+    color: string,
+    size: number
+  } 
 
   return (
     <View style={ styles.tabBarStyle }>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-        const label : any =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : options.tabBarIcon !== undefined 
-            ? options.tabBarIcon
-            : route.name;
+        const label : any = options.tabBarIcon !== undefined 
+                          ? options.tabBarIcon(propIcon)
+                          : route.name;
+          // options.tabBarLabel !== undefined
+          //   ? options.tabBarLabel
+          //   : options.title !== undefined
+          //   ? options.title
+          //   : 
 
         const isFocused = state.index === index;
 
@@ -54,9 +59,9 @@ export default function TabBar(props: BottomTabBarProps) {
             testID={options.tabBarButtonTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={ styles.tabBarButton }
+            style={[ styles.tabBarButton, isFocused ? styles.tabBarButtonFocus : "" ]}
           >
-            { label() }
+            { label }
           </TouchableOpacity>
         );
       })}
@@ -71,10 +76,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 100,
-    height: 50
+    paddingTop: 8,
+    paddingBottom: 8
+    // height: 50
   },
   tabBarButton: {
     alignItems: 'center',
+    width: 40,
+    height: 40,
+    justifyContent: 'center'
+  },
+  tabBarButtonFocus: {
+    backgroundColor: '#ececec',
+    borderRadius: 50,
   },
   tabBarButtonText: {
 
