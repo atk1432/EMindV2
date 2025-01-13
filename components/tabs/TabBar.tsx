@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity, View  } from "react-native";
-import { _Text } from "../ultis";
+import { _colorBg, _Text } from "../ultis";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Octicons } from "@expo/vector-icons";
 
@@ -21,11 +21,6 @@ export default function TabBar(props: BottomTabBarProps) {
         const label : any = options.tabBarIcon !== undefined 
                           ? options.tabBarIcon(propIcon)
                           : route.name;
-          // options.tabBarLabel !== undefined
-          //   ? options.tabBarLabel
-          //   : options.title !== undefined
-          //   ? options.title
-          //   : 
 
         const isFocused = state.index === index;
 
@@ -48,22 +43,40 @@ export default function TabBar(props: BottomTabBarProps) {
           });
         };
 
-        // console.log(label)
-
-        return (
-          <TouchableOpacity
-            key={index}
-            accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarButtonTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={[ styles.tabBarButton, isFocused ? styles.tabBarButtonFocus : "" ]}
-          >
-            { label }
-          </TouchableOpacity>
-        );
+        if (index !== 2)
+          return (
+            <TouchableOpacity
+              key={index}
+              accessibilityRole="button"
+              accessibilityState={isFocused ? { selected: true } : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              testID={options.tabBarButtonTestID}
+              onPress={onPress}
+              onLongPress={onLongPress}
+              style={[ styles.tabBarButton, isFocused ? styles.tabBarButtonFocus : "" ]}
+            >
+              { label }
+            </TouchableOpacity>
+          )
+        else
+          return (
+            <TouchableOpacity
+              key={index}
+              accessibilityRole="button"
+              accessibilityState={isFocused ? { selected: true } : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              testID={options.tabBarButtonTestID}
+              onPress={onPress}
+              onLongPress={onLongPress}
+              style={[ 
+                styles.tabBarButton, 
+                styles.tabBarButtonMiddle, 
+                isFocused ? styles.tabBarButtonFocus : "" 
+              ]}
+            >
+              { label }
+            </TouchableOpacity>
+          ) 
       })}
     </View>
   );
@@ -85,6 +98,15 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     justifyContent: 'center'
+  },
+  tabBarButtonMiddle: {
+    position: 'relative',
+    backgroundColor: '#db9c60',
+    borderRadius: 100,
+    bottom: 20,
+    transform: [{ scale: 1.8 }],
+    borderWidth: 4,
+    borderColor: _colorBg
   },
   tabBarButtonFocus: {
     backgroundColor: '#ececec',

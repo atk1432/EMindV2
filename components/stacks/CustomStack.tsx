@@ -3,6 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { _Text } from "../ultis"
 import { _padL, _padT } from "../ultis";
 import { useNavigation } from "expo-router";
+import { BottomTabHeaderProps } from "@react-navigation/bottom-tabs";
 
 export default function CustomStack(props: any) {
   const navigation = props.navigation 
@@ -18,7 +19,7 @@ export default function CustomStack(props: any) {
         <Ionicons name="chevron-back" size={24} color="black" />
       </TouchableOpacity>
       <_Text style={ styles.headerText }>
-        { route.name }
+        { options.tabBarLabel }
       </_Text>
     </View>
   )
@@ -29,15 +30,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: _padT,
-    marginLeft: _padL
+    marginLeft: _padL,
+    // position: 'absolute',
   },
   headerText: {
     fontSize: 24,
     marginLeft: 10
   },
   button: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,

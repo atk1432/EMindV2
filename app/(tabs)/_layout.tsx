@@ -3,6 +3,7 @@ import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import { AntDesign, Ionicons, Octicons } from "@expo/vector-icons"
 import TabBar from '@/components/tabs/TabBar';
+import CustomStack from '@/components/stacks/CustomStack';
 
 interface TabScreenData {
   name: string,
@@ -26,6 +27,11 @@ export default function TabLayout() {
       title: "Trò chuyện"
     },  
     { 
+      name: 'heartRate', 
+      icon: <AntDesign name="plus" size={iconSize} color={iconColor} />,
+      title: "Đo nhịp tim"
+    },  
+    { 
       name: 'chart', 
       icon: <AntDesign name="barschart" size={iconSize} color={iconColor} />,
       title: "Biểu đồ"
@@ -40,11 +46,11 @@ export default function TabLayout() {
   return (
     <Tabs 
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         tabBarShowLabel: false,
         tabBarStyle: styles.tabBarStyle,
         animation: 'shift',
-
+        header: (props) => <CustomStack {...props} />
       }}
       tabBar={(props) => <TabBar {...props} />}
     >
@@ -65,7 +71,7 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    borderRadius: 100
+    borderRadius: 100,
   },
   tabBarLabelStyle: {
     fontFamily: _fontFamily
