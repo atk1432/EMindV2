@@ -1,31 +1,19 @@
 import { ReactNode, useEffect } from "react";
-import { StyleSheet, Text, TextStyle, ViewStyle } from "react-native";
+import { StyleSheet, Text, TextStyle, Image, ViewStyle, ImageProps, TextProps, ViewProps, View, ScrollView, Dimensions } from "react-native";
 import { useFonts } from 'expo-font'
-import { Link, SplashScreen } from "expo-router";
+import { Link, LinkProps, SplashScreen } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-interface Node {
-  children?: ReactNode
-}
-
-interface TextNode extends Node {
-  style?: TextStyle
-}
-
-interface ViewNode extends Node {
-  style?: ViewStyle
-}
-
-interface LinkNode extends TextNode {
-  href?: any
-}
 
 // Global
-export const _padL = 23
-export const _padT = 20
-export const _fontFamily = 'SourGummy-Regular'
-const fontFamilyModule = require(`@/assets/fonts/SourGummy-Regular.ttf`)
+export const _padL = 16
+export const _padT = 18
+export const _colorBg = '#f5f5f5'
+export const _widthContainer = Dimensions.get('window').width - 2 * _padL
+export const _fontFamily = 'Lexend-Regular'
+const fontFamilyModule = require(`@/assets/fonts/Lexend-Regular.ttf`)
 
-export function _Text(node: TextNode) {
+export function _Text(node: TextProps) {
   const [ loaded, error ] = useFonts({
     [_fontFamily]: fontFamilyModule
   })
@@ -48,7 +36,7 @@ export function _Text(node: TextNode) {
   )
 }
 
-export function _Link(node: LinkNode) {
+export function _Link(node: LinkProps) {
   return (
     <Link 
       href={ node.href }
@@ -59,8 +47,55 @@ export function _Link(node: LinkNode) {
   )
 }
 
+export function _Image(node: ImageProps) {
+  return (
+    <Image 
+      source={ node.source }
+      style={ node.style } 
+    />
+  )
+}
+
+// Use to wrap all container
+export function _Layout(node: ViewProps) {
+  return (
+    <SafeAreaView 
+      style={[ styles.layout, node.style ]}
+    >
+      <ScrollView showsVerticalScrollIndicator>
+        { node.children }
+      </ScrollView>
+    </SafeAreaView>
+  )
+}
+
+// Use for adjust style such as backgroundColor, borderRadius instead of View
+export function _Container(node: ViewProps) {
+  return (
+    <View style={[ node.style, styles.container ]}>
+      { node.children }
+    </View>
+  )
+}
+
 const styles = StyleSheet.create({
   text: {
-    fontFamily: _fontFamily
+    fontFamily: _fontFamily,
+    fontSize: 16
+  },
+  layout: {
+    paddingTop: _padT,
+    paddingBottom: _padT,
+    paddingLeft: _padL,
+    paddingRight: _padL,
+    backgroundColor: _colorBg
+  },
+  container: {
+    marginTop: 10,
+    paddingTop: _padT,
+    paddingBottom: _padT,
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 10
   }
 })
