@@ -14,6 +14,12 @@ export const _widthContainer = Dimensions.get('window').width - 2 * _padL
 export const _fontFamily = 'Lexend-Regular'
 const fontFamilyModule = require(`@/assets/fonts/Lexend-Regular.ttf`)
 
+
+interface _Layout extends ViewProps {
+  size?: 'full' 
+}
+
+
 export function _Text(node: TextProps) {
   const [ loaded, error ] = useFonts({
     [_fontFamily]: fontFamilyModule
@@ -58,10 +64,14 @@ export function _Image(node: ImageProps) {
 }
 
 // Use to wrap all container
-export function _Layout(node: ViewProps) {
+export function _Layout(node: _Layout) {
+  // Add logic for styles
+  const _styles = [ styles.layout, node.style ]
+  if (node.size == 'full') _styles.push(styles.layoutFullSize)
+
   return (
     <SafeAreaView 
-      style={[ styles.layout, node.style ]}
+      style={ _styles }
     >
       <ScrollView showsVerticalScrollIndicator>
         { node.children }
@@ -90,6 +100,9 @@ const styles = StyleSheet.create({
     paddingLeft: _padL,
     paddingRight: _padL,
     backgroundColor: _colorBg
+  },
+  layoutFullSize: {
+    height: Dimensions.get('window').height
   },
   container: {
     marginTop: 10,

@@ -7,7 +7,7 @@ export default function ButtonNormal(props: _Button) {
   return (
     <TouchableOpacity
       onPress={ props.onPress }
-      style={ styles.button }
+      style={[ styles.button, props.style ]}
     >
       <_Text style={ styles.text }>
         { props.title }
