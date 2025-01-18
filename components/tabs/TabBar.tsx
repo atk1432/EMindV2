@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity, View  } from "react-native";
-import { _colorBg, _Text } from "../ultis";
+import { _colorBg, _mainColor, _Text } from "../ultis";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Octicons } from "@expo/vector-icons";
 
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   tabBarButtonMiddle: {
     position: 'relative',
-    backgroundColor: '#db9c60',
+    backgroundColor: _mainColor,
     borderRadius: 100,
     bottom: 20,
     transform: [{ scale: 1.8 }],

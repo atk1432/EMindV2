@@ -9,6 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export const _padL = 16
 export const _padT = 18
 export const _colorBg = '#f5f5f5'
+export const _mainColor = '#db9c60'
 export const _widthContainer = Dimensions.get('window').width - 2 * _padL
 export const _fontFamily = 'Lexend-Regular'
 const fontFamilyModule = require(`@/assets/fonts/Lexend-Regular.ttf`)
