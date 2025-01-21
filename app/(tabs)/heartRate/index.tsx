@@ -1,8 +1,10 @@
 import ButtonNormal from "@/components/buttons/ButtonNormal";
 import { _Layout, _Text } from "@/components/ultis";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { Camera, useCameraPermission, useCameraDevice, useCameraFormat, CameraDevice } from "react-native-vision-camera"
+
+// import Torch from "react-native-torch"
 import Torch from "react-native-torch"
 
 
@@ -16,25 +18,39 @@ export default function HeartRateScreen() {
   ])
   const { hasPermission, requestPermission } = useCameraPermission()
 
-  if (device.hasTorch) console.log("on")
-  else console.log("off")
+  console.log(cameraActive)
 
-  if (cameraActive) Torch.switchState(true)
-  else Torch.switchState(false)
+  Torch.switchState(cameraActive)
+
+  useEffect(() => {
+    async function checkPermission() {
+      const cameraAllowed = await Torch.requestCameraPermission(
+          'Camera Permissions', // dialog title
+          'We require camera permissions to use the torch on the back of your phone.' // dialog body
+      );
+  
+      if (cameraAllowed) {
+        console.log('Camera allowed')
+      } else {
+        console.log('Not allowed')
+      }
+    }
+
+    checkPermission()
+  }, [])
 
   return (
     <_Layout size="full" style={ styles.layout }>
       <View style={ styles.camera }>
         { hasPermission ? 
-          cameraActive ?
           <Camera 
             format={ lowResolutionFormat }
-            torch="on"
-            fps={30}
+            // torch="on"
+            // fps={30}
             style={[ styles._camera, StyleSheet.absoluteFill ]}
             device={ device }
-            isActive={ true }
-          /> : ""
+            isActive={ cameraActive }
+          /> 
         : "" }
       </View>
       <ButtonNormal 
