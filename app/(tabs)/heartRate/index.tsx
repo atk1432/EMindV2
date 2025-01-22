@@ -3,11 +3,9 @@ import { _Layout, _Text } from "@/components/ultis";
 import { useEffect, useState, useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import { Camera, useCameraPermission, useCameraDevice, useCameraFormat, CameraDevice, useFrameProcessor } from "react-native-vision-camera"
-import { Face, useFaceDetector, FaceDetectionOptions } from 'react-native-vision-camera-face-detector'
-// import Torch from "react-native-torch"
 import Torch from "react-native-torch"
-import { useRSXformBuffer } from "@shopify/react-native-skia";
-
+import { useTensorflowModel } from "react-native-fast-tflite";
+import {useResizePlugin  } from "vision-camera-resize-plugin"
 
 const cameraSize = 300
 
@@ -19,17 +17,24 @@ export default function HeartRateScreen() {
   ])
   const { hasPermission, requestPermission } = useCameraPermission()
 
-  // Face options
-  const faceDetectionOptions = useRef<FaceDetectionOptions>({
+  // Plugins
+  const { resize } = useResizePlugin()
 
-  }).current
-  console.log(faceDetectionOptions)
-  const faces  = useFaceDetector(faceDetectionOptions)
+  // Models
+  const objectDetection = useTensorflowModel(require('@/assets/models/1.tflite'))
 
   const frameProcessor = useFrameProcessor((frame) => {
     'worklet'
-    // const faces = detectFaces(frame)
-    // console.log(faces)
+    const resized = resize(frame, {
+      scale: {
+        width: 320,
+        height: 320,
+      },
+      pixelFormat: 'rgb',
+      dataType: 'float32',
+    })
+
+    // const outputs = objectDetection.model?.runSync([frame])
   }, [])
 
   useEffect(() => {
@@ -56,7 +61,7 @@ export default function HeartRateScreen() {
           <Camera 
             format={ lowResolutionFormat }
             frameProcessor={ frameProcessor }
-            // torch="on"
+            torch="on"
             fps={ 10 }
             style={[ styles._camera, StyleSheet.absoluteFill ]}
             device={ device }
