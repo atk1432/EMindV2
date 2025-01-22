@@ -7,8 +7,8 @@ import { useEffect } from "react";
 export default function UserScreen() {
   const plugin = useTensorflowModel(require("@/assets/models/test_model.tflite"))
   const runModel = async () => {
-    const buffer = new ArrayBuffer(8.0)
-    const inputData = new Float32Array(buffer)
+    // const buffer = new ArrayBuffer(8.0)
+    const inputData = new Float32Array([4.0])
     const outputData = plugin.model?.runSync([inputData])
     console.log(outputData)
   } 

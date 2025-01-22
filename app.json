@@ -22,6 +22,8 @@
       },
       "permissions": [
         "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
       "package": "com.atk1432.EMindV2"
@@ -61,6 +63,12 @@
       "eas": {
         "projectId": "0f42bf64-1f91-410c-9c15-81629ff6095f"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/0f42bf64-1f91-410c-9c15-81629ff6095f"
     }
   }
 }

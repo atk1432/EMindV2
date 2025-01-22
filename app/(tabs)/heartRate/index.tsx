@@ -1,11 +1,12 @@
 import ButtonNormal from "@/components/buttons/ButtonNormal";
 import { _Layout, _Text } from "@/components/ultis";
-import { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
-import { Camera, useCameraPermission, useCameraDevice, useCameraFormat, CameraDevice } from "react-native-vision-camera"
-
+import { useEffect, useState, useRef } from "react";
+import { StyleSheet, View } from "react-native";
+import { Camera, useCameraPermission, useCameraDevice, useCameraFormat, CameraDevice, useFrameProcessor } from "react-native-vision-camera"
+import { Face, useFaceDetector, FaceDetectionOptions } from 'react-native-vision-camera-face-detector'
 // import Torch from "react-native-torch"
 import Torch from "react-native-torch"
+import { useRSXformBuffer } from "@shopify/react-native-skia";
 
 
 const cameraSize = 300
@@ -18,9 +19,18 @@ export default function HeartRateScreen() {
   ])
   const { hasPermission, requestPermission } = useCameraPermission()
 
-  console.log(cameraActive)
+  // Face options
+  const faceDetectionOptions = useRef<FaceDetectionOptions>({
 
-  Torch.switchState(cameraActive)
+  }).current
+  console.log(faceDetectionOptions)
+  const faces  = useFaceDetector(faceDetectionOptions)
+
+  const frameProcessor = useFrameProcessor((frame) => {
+    'worklet'
+    // const faces = detectFaces(frame)
+    // console.log(faces)
+  }, [])
 
   useEffect(() => {
     async function checkPermission() {
@@ -30,9 +40,9 @@ export default function HeartRateScreen() {
       );
   
       if (cameraAllowed) {
-        console.log('Camera allowed')
+        console.log('Flashlight allowed')
       } else {
-        console.log('Not allowed')
+        console.log('Flashlight not allowed')
       }
     }
 
@@ -45,8 +55,9 @@ export default function HeartRateScreen() {
         { hasPermission ? 
           <Camera 
             format={ lowResolutionFormat }
+            frameProcessor={ frameProcessor }
             // torch="on"
-            // fps={30}
+            fps={ 10 }
             style={[ styles._camera, StyleSheet.absoluteFill ]}
             device={ device }
             isActive={ cameraActive }
@@ -55,7 +66,14 @@ export default function HeartRateScreen() {
       </View>
       <ButtonNormal 
         style={ styles.button }
-        onPress={ () => !hasPermission ? requestPermission() : setCameraActive(!cameraActive) }
+        onPress={ () => {
+          if (!hasPermission) {
+            requestPermission() 
+          } else {
+            setCameraActive(!cameraActive) 
+            Torch.switchState(cameraActive)
+          }
+        }}
         title={ !cameraActive ? "Bật cameda" : "Tắt camera" }
       />
     </_Layout>
