@@ -51,6 +51,12 @@
           "enableMicrophonePermission": true,
           "microphonePermissionText": "$(PRODUCT_NAME) needs access to your Microphone."
         }
+      ],
+      [
+        "expo-asset",
+        {
+          "assets": ["@/assets/models/test_model.tflite"]
+        }
       ]
     ],
     "experiments": {
