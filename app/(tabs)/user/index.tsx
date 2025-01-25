@@ -2,6 +2,7 @@ import { _Layout, _Text } from "@/components/ultis";
 import ButtonNormal from "@/components/buttons/ButtonNormal";
 import { loadTensorflowModel, useTensorflowModel } from "react-native-fast-tflite"
 import { useEffect } from "react";
+import MyModule from "@/modules/my-module/src/MyModule";
 
 
 export default function UserScreen() {
@@ -12,9 +13,10 @@ export default function UserScreen() {
   //   const outputData = plugin.model?.runSync([inputData])
   //   console.log(outputData)
   // } 
-
+  
   return (
     <_Layout>
+      <_Text>{ MyModule.hello() }</_Text>
       <ButtonNormal title="Test tfnlite" />
     </_Layout>
   )
