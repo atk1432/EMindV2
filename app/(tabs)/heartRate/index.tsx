@@ -1,7 +1,7 @@
 import ButtonNormal from "@/components/buttons/ButtonNormal";
 import { _Layout, _Text } from "@/components/ultis";
-import { useEffect, useState, useRef } from "react";
-import { StyleSheet, View } from "react-native";
+import { useState } from "react";
+import { StyleSheet, View, Platform } from "react-native";
 import { Camera, useCameraPermission, useCameraDevice, useCameraFormat, useFrameProcessor } from "react-native-vision-camera"
 import Torch from "react-native-torch"
 import { useTensorflowModel, loadTensorflowModel } from "react-native-fast-tflite";
@@ -9,6 +9,8 @@ import {useResizePlugin  } from "vision-camera-resize-plugin"
 import { useSharedValue } from "react-native-worklets-core";
 import { useSharedValue as _useSharedValue } from "react-native-reanimated"
 import { Asset, useAssets } from "expo-asset";
+import { Canvas, Text, matchFont, Fill, Skia } from "@shopify/react-native-skia";
+
 
 
 const cameraSize = 300
@@ -24,18 +26,26 @@ export default function HeartRateScreen() {
   const rgbMeans = useSharedValue(0)
   const shareValue = _useSharedValue(rgbMeans)
 
+  // Skia
+  const fontFamily = Platform.select({ ios: "Helvetica", default: "serif" });
+  const fontStyle : any = {
+    fontFamily,
+    fontSize: 14,
+    fontStyle: "italic",
+    fontWeight: "bold",
+  };
+  const font = matchFont(fontStyle);
+
   // Plugins
   const { resize } = useResizePlugin()
 
   // Models
-  // console.log(assets)
-  const plugin = useTensorflowModel(require('@/assets/models/test_model.tflite'))
-  const model = plugin.state === "loaded" ? plugin.model : undefined
-  // console.log(model)
+  // const plugin = useTensorflowModel(require('@/assets/models/test_model.tflite'))
+  // const model = plugin.state === "loaded" ? plugin.model : undefined
 
   const frameProcessor = useFrameProcessor((frame) => {
     'worklet'
-    if (model == null) return
+    // if (model == null) return
 
     const resized = resize(frame, {
       scale: {
@@ -46,24 +56,11 @@ export default function HeartRateScreen() {
       dataType: "uint8",
     })
 
-    // if (!model)
-    const outputs: any = model?.runSync([resized])
-    // console.log(outputs)
-    rgbMeans.value = outputs[0][0]
+    // const outputs: any = model?.runSync([resized])
+    // rgbMeans.value = outputs[0][0]
 
-  }, [model])
-
-  useEffect(() => {
-    async function checkPermission() {
-      // Load model
-      // var model = await loadTensorflowModel(require('@/assets/models/test_model.tflite'))
-      // setModel(model)
-    }
-
-    checkPermission()
   }, [])
 
-  // console.log(rgbMeans.get())
 
   return (
     <_Layout size="full" style={ styles.layout }>
@@ -81,6 +78,14 @@ export default function HeartRateScreen() {
         : "" }
       </View>
       <_Text>Red: { rgbMeans.value }</_Text>
+      <Canvas>
+        <Text 
+          x={0}
+          y={ fontStyle.fontSize }
+          text="Hello world"
+          font={font}
+        />
+      </Canvas>
       <ButtonNormal 
         style={ styles.button }
         onPress={ () => {
