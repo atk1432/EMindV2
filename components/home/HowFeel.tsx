@@ -1,5 +1,7 @@
-import { StyleSheet, View } from "react-native"
+import { Pressable, StyleSheet, View } from "react-native"
 import { _Text, _Container, _Image, _widthContainer } from "../ultis"
+import { useState } from "react"
+import { useSharedState } from "@/hooks/Ultis"
 
 const emotions = [
   { img: require("@/assets/images/howfeel/sad.png") },
@@ -12,17 +14,22 @@ const emotions = [
 const emotionSize = 40
 
 export default function HowFeel() {
+  const { state, setState } = useSharedState()
+
   return (
     <_Container style={ styles.container }>
       <_Text>Bạn cảm thấy như thế nào hôm nay?</_Text>
       <View style={ styles.emotionView }>
         { emotions.map((emotion, index) => (
-          <_Image 
-            key={ index } 
-            resizeMode="cover"
-            source={ emotion.img } 
-            style={ styles.emotionIcon }
-          />
+          <Pressable key={ index } onPress={() => setState(index)} >
+            <_Image 
+              resizeMode="cover"
+              source={ emotion.img } 
+              style={[ styles.emotionIcon, 
+                (index != state) && (state != -1) ? styles.emotionIconInactive : "" 
+              ]}
+            />
+          </Pressable>
         )) }
       </View>
     </_Container>
@@ -42,5 +49,8 @@ const styles = StyleSheet.create({
   emotionIcon: {
     width: emotionSize,
     height: emotionSize,
+  },
+  emotionIconInactive: {
+    opacity: 0.5
   }
 })

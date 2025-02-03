@@ -1,8 +1,10 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, memo } from "react";
 import { StyleSheet, Text, TextStyle, Image, ViewStyle, ImageProps, TextProps, ViewProps, View, ScrollView, Dimensions } from "react-native";
 import { useFonts } from 'expo-font'
 import { Link, LinkProps, SplashScreen } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { SharedStateProvider } from "@/hooks/Ultis";
+import React from "react";
 
 
 // Global
@@ -19,6 +21,9 @@ interface _Layout extends ViewProps {
   size?: 'full' 
 }
 
+interface _Container extends ViewProps {
+  title?: string
+}
 
 export function _Text(node: TextProps) {
   const [ loaded, error ] = useFonts({
@@ -32,7 +37,7 @@ export function _Text(node: TextProps) {
   }, [loaded, error]);
 
   if (!loaded && !error) {
-    console.log("Error fonts")
+    // console.log("Error fonts")
     return null;
   }
 
@@ -74,7 +79,9 @@ export function _Layout(node: _Layout) {
       style={ _styles }
     >
       <ScrollView showsVerticalScrollIndicator>
-        { node.children }
+        <SharedStateProvider>
+          { node.children }
+        </SharedStateProvider>
       </ScrollView>
     </SafeAreaView>
   )
@@ -83,9 +90,19 @@ export function _Layout(node: _Layout) {
 // Use for adjust style such as backgroundColor, borderRadius instead of View
 export function _Container(node: ViewProps) {
   return (
+    <View style={[ styles.container, node.style ]}>
+      { node.children }
+    </View>
+  )
+}
+
+export function _ContainerWithTitle(node: _Container) {
+  return (<>
+    <_Text style={ styles.title }>{ node.title }</_Text>
     <View style={[ node.style, styles.container ]}>
       { node.children }
     </View>
+  </>
   )
 }
 
@@ -111,5 +128,9 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'white',
     borderRadius: 10
+  }, 
+  title: {
+    marginTop: 18,
+    fontSize: 20
   }
 })
