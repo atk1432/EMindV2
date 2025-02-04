@@ -62,8 +62,7 @@ export function _Link(node: LinkProps) {
 export function _Image(node: ImageProps) {
   return (
     <Image 
-      source={ node.source }
-      style={ node.style } 
+      { ...node } 
     />
   )
 }
