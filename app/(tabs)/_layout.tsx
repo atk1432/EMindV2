@@ -1,7 +1,7 @@
 import { _fontFamily } from '@/components/ultis';
 import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
-import { AntDesign, Ionicons, Octicons } from "@expo/vector-icons"
+import { AntDesign, Ionicons, Octicons, FontAwesome5 } from "@expo/vector-icons"
 import TabBar from '@/components/tabs/TabBar';
 import CustomStack from '@/components/stacks/CustomStack';
 
@@ -22,9 +22,9 @@ export default function TabLayout() {
       title: "Home"
     },
     { 
-      name: 'chat', 
-      icon: <Ionicons name="chatbubble-ellipses-outline" size={iconSize} color={iconColor} />,
-      title: "Trò chuyện"
+      name: 'categories', 
+      icon: <AntDesign name="book" size={iconSize} color={iconColor} />,
+      title: "Gợi ý cho bạn"
     },  
     { 
       name: 'heartRate', 

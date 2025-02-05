@@ -3,3 +3,4 @@
         - _layout.tsx
         - index.tsx
     + stack in each layout use MyStack instead of Stack
+* Change name tab: restart server

@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   emotionText: {
-    // fontWeight: 700
+    fontFamily: 'Lexend-Bold'
   },
   image: {
     marginLeft: 20,

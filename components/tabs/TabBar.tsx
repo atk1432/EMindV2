@@ -2,6 +2,7 @@ import { StyleSheet, TouchableOpacity, View  } from "react-native";
 import { _colorBg, _mainColor, _Text } from "../ultis";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Octicons } from "@expo/vector-icons";
+import React from "react";
 
 
 export default function TabBar(props: BottomTabBarProps) {
@@ -20,7 +21,7 @@ export default function TabBar(props: BottomTabBarProps) {
         const { options } = descriptors[route.key];
         const label : any = options.tabBarIcon !== undefined 
                           ? options.tabBarIcon(propIcon)
-                          : route.name;
+                          : <></>;
 
         const isFocused = state.index === index;
 
@@ -54,8 +55,8 @@ export default function TabBar(props: BottomTabBarProps) {
               onPress={onPress}
               onLongPress={onLongPress}
               style={[ styles.tabBarButton, isFocused ? styles.tabBarButtonFocus : "" ]}
-            >
-              { label }
+            >              
+              { label } 
             </TouchableOpacity>
           )
         else
