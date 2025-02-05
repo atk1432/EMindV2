@@ -54,17 +54,20 @@ export default function TabLayout() {
       }}
       tabBar={(props) => <TabBar {...props} />}
     >
-      { tabs.map((tab, index) => (
-        <Tabs.Screen
-          key={ index }
-          name={ tab.name } 
-          options={{
-            tabBarIcon: () => tab.icon,
-            tabBarLabel: tab.title,
-            headerTitle: tab.title
-          }}
-        />
-      ))}
+      { tabs.map((tab, index) => {
+        return (
+          <Tabs.Screen
+            key={ index }
+            name={ tab.name } 
+            options={{
+              headerShown: index === 1 ? false : true,
+              tabBarIcon: () => tab.icon,
+              tabBarLabel: tab.title,
+              headerTitle: tab.title
+            }}
+          />)
+        }
+      )}
     </Tabs>
   );
 }

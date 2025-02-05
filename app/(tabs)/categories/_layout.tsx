@@ -5,7 +5,7 @@ export default function CategoriesLayout() {
   return (
     <MyStack>
       <Stack.Screen name="index" />
-      {/* <Stack.Screen name="contents" /> */}
+      <Stack.Screen name="contents/[slug]"/>
     </MyStack>
   );
 }

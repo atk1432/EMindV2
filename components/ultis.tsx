@@ -8,13 +8,13 @@ import React from "react";
 
 
 // Global
-export const _padL = 16
-export const _padT = 18
-export const _colorBg = '#f5f5f5'
-export const _mainColor = '#db9c60'
-export const _widthContainer = Dimensions.get('window').width - 2 * _padL
-export const _fontFamily = 'Lexend-Regular'
-export const _fontFamilyBold = 'Lexend-Bold'
+export const _padL = 16   // this is for paddingLeft, paddingRight of _Container
+export const _padT = 18   // this is for paddingTop, paddingBottom of _Container
+export const _colorBg = '#f5f5f5'  // color background for app
+export const _mainColor = '#db9c60'   // color background for button, tab bar middle button
+export const _widthContainer = Dimensions.get('window').width - 2 * _padL  // width of _Container
+export const _fontFamily = 'Lexend-Regular'  // main font
+export const _fontFamilyBold = 'Lexend-Bold'  // main font but bold
 const fontFamilyModule = require(`@/assets/fonts/Lexend-Regular.ttf`)
 const fontFamilyBoldModule = require(`@/assets/fonts/Lexend-Bold.ttf`)
 

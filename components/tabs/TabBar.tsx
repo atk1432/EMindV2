@@ -1,11 +1,13 @@
-import { StyleSheet, TouchableOpacity, View  } from "react-native";
+import { Dimensions, StyleSheet, TouchableOpacity, View  } from "react-native";
 import { _colorBg, _mainColor, _Text } from "../ultis";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Octicons } from "@expo/vector-icons";
+import { useRoute, useNavigationState } from "@react-navigation/native";
 import React from "react";
 
 
 export default function TabBar(props: BottomTabBarProps) {
+  const _route =  useNavigationState(state => state);
   const state = props.state
   const descriptors = props.descriptors
   const navigation = props.navigation
@@ -14,6 +16,8 @@ export default function TabBar(props: BottomTabBarProps) {
     color: string,
     size: number
   } 
+  
+  console.log(_route)
 
   return (
     <View style={ styles.tabBarStyle }>
@@ -43,6 +47,7 @@ export default function TabBar(props: BottomTabBarProps) {
             target: route.key,
           });
         };
+
 
         if (index !== 2)
           return (
@@ -91,8 +96,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 100,
     paddingTop: 8,
-    paddingBottom: 8
-    // height: 50
+    paddingBottom: 8,
+    zIndex: 1,
+    elevation: 0,
+    position: 'absolute',
+    width: Dimensions.get('window').width,
+    bottom: 0
   },
   tabBarButton: {
     alignItems: 'center',

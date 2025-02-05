@@ -4,14 +4,16 @@ import { Container } from "@shopify/react-native-skia/lib/typescript/src/rendere
 import { Link, router } from "expo-router";
 
 interface _Card extends ViewProps {
+  name: string,
   title?: string,
+  describe?: string,
   image?: any
 }
 
 export default function Card(props: _Card) {
   return (
     <Pressable onPress={() => {
-      router.navigate({ pathname: "/categories/contents/[slug]", params: { slug: 12 } })
+      router.navigate({ pathname: "/categories/contents/[slug]", params: { slug: props.name } })
     }}>
       <_Container style={ styles.container }>
         <_Image 
@@ -20,8 +22,8 @@ export default function Card(props: _Card) {
           style={ styles.image }
         />
         <View style={ styles.view2 }>
-          <_Text style={ styles.text }>Bài test sức bền</_Text>
-          <_Text style={[ styles.text, styles.textDescribe ]}>Tedfsst nhỏ hơn</_Text>
+          <_Text style={ styles.text }>{ props.title }</_Text>
+          {/* <_Text style={[ styles.text, styles.textDescribe ]}>{ props.describe }</_Text> */}
         </View>
         <View>
           <_Text style={[ styles.text, styles.score ]}>32</_Text>
@@ -34,24 +36,25 @@ export default function Card(props: _Card) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: 0,
-    paddingRight: 0,
+    paddingTop: 10,
+    paddingBottom: 10,
+    // paddingLeft: 0,
+    // paddingRight: 0,
     justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: "#dddddd",
-    borderWidth: 1
+    backgroundColor: "#e7eaee",
+    // borderWidth: 1
   },
   text: {
-    color: '#85144b'
+    color: '#112a46',
   },
   view2: {
-    flex: 0.8
+    flex: 0.9
   },
   textDescribe: {
-    fontSize: 13
+    fontSize: 12,
+    opacity: 0.6
   },
   score: {
     marginRight: 10,
