@@ -8,8 +8,9 @@ import React from "react";
 
 
 // Global
-export const _padL = 16   // this is for paddingLeft, paddingRight of _Container
-export const _padT = 18   // this is for paddingTop, paddingBottom of _Container
+export const _padL = 16   // this is for paddingLeft, paddingRight of _Layout
+export const _padT = 18   // this is for paddingTop, paddingBottom of _Layout, _Container
+export const _padContainer = 10 // this is paddingLeft and paddingRight of _Container
 export const _colorBg = '#f5f5f5'  // color background for app
 export const _mainColor = '#db9c60'   // color background for button, tab bar middle button
 export const _widthContainer = Dimensions.get('window').width - 2 * _padL  // width of _Container
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingTop: _padT,
     paddingBottom: _padT,
-    padding: 10,
+    padding: _padContainer,
     backgroundColor: 'white',
     borderRadius: 10
   }, 

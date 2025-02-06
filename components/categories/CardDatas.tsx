@@ -1,18 +1,22 @@
+export type CardNames = "PSS"
+
 export interface ContentQuestionProps {
   describe?: string,
   image?: any,
   questions: string[],
-  answers: string[]
+  answers: string[],
+  name: CardNames
 }
 
 export interface CardsProp {
   type: "questions",
-  name: string,
+  name: CardNames,
   title: string,
   content: ContentQuestionProps,
   describe?: string,
   image: any
 }
+
 
 export const Cards : CardsProp[] = [
   {
@@ -20,6 +24,7 @@ export const Cards : CardsProp[] = [
     name: "PSS",
     title: "Câu hỏi đánh giá stress (PSS-10)",
     content: {
+      name: "PSS",
       describe: "PSS-10 là công cụ để đánh giá stress",
       image: require("@/assets/images/contents/stress.jpg"),
       questions: [
