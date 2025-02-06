@@ -24,7 +24,7 @@ export default function MyStack(screens: any) {
   return (
     <Stack    
       screenOptions={{
-        headerShown: false,
+        headerShown: screens.headerShown ? true : false,
         header: (props) => <CustomStack {...props} /> 
       }}
     >

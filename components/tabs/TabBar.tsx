@@ -4,11 +4,11 @@ import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Octicons } from "@expo/vector-icons";
 import { useRoute, useNavigationState } from "@react-navigation/native";
 import React from "react";
+import { useSharedStateTabBar } from "@/hooks/Ultis";
 
 
 export default function TabBar(props: BottomTabBarProps) {
-  const _route =  useNavigationState(state => state);
-  const state = props.state
+  const states = props.state
   const descriptors = props.descriptors
   const navigation = props.navigation
   var propIcon : {
@@ -16,18 +16,18 @@ export default function TabBar(props: BottomTabBarProps) {
     color: string,
     size: number
   } 
-  
-  console.log(_route)
 
+  const { state, setState } = useSharedStateTabBar()
+  
   return (
-    <View style={ styles.tabBarStyle }>
-      {state.routes.map((route, index) => {
+    <View style={[ styles.tabBarStyle, state !== 0 ? { display: 'none' } : { display: 'flex' } ]}>
+      {states.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label : any = options.tabBarIcon !== undefined 
                           ? options.tabBarIcon(propIcon)
                           : <></>;
 
-        const isFocused = state.index === index;
+        const isFocused = states.index === index;
 
         const onPress = () => {
           const event = navigation.emit({

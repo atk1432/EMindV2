@@ -13,6 +13,7 @@ export const _padT = 18   // this is for paddingTop, paddingBottom of _Container
 export const _colorBg = '#f5f5f5'  // color background for app
 export const _mainColor = '#db9c60'   // color background for button, tab bar middle button
 export const _widthContainer = Dimensions.get('window').width - 2 * _padL  // width of _Container
+export const _heightStack = 50
 export const _fontFamily = 'Lexend-Regular'  // main font
 export const _fontFamilyBold = 'Lexend-Bold'  // main font but bold
 const fontFamilyModule = require(`@/assets/fonts/Lexend-Regular.ttf`)

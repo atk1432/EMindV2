@@ -1,7 +1,7 @@
 import { View, StyleSheet, TouchableOpacity } from "react-native"
 import { Ionicons } from "@expo/vector-icons";
 import { _colorBg, _Text } from "../ultis"
-import { _padL, _padT } from "../ultis";
+import { _padL, _padT, _heightStack } from "../ultis";
 import { useNavigation } from "expo-router";
 import { BottomTabHeaderProps } from "@react-navigation/bottom-tabs";
 
@@ -31,8 +31,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: _padT,
     paddingLeft: _padL,
-    backgroundColor: _colorBg
+    backgroundColor: _colorBg,
     // position: 'absolute',
+    height: _heightStack
   },
   headerText: {
     fontSize: 24,

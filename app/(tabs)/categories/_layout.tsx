@@ -3,7 +3,7 @@ import MyStack from '@/components/stacks/MyStack';
 
 export default function CategoriesLayout() {
   return (
-    <MyStack>
+    <MyStack headerShown={ true }>
       <Stack.Screen name="index" />
       <Stack.Screen name="contents/[slug]"/>
     </MyStack>
