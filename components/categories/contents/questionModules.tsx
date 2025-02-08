@@ -1,6 +1,19 @@
 import React from "react"
 import { CardNames } from "../CardDatas";
 
+
+const LevelProps = [
+  { name: "Nhẹ", color: "green"} ,  
+  { name: "Vừa", color: "#ffdd39"} , 
+  { name: "Nặng", color: "red"}
+]
+
+interface ResultScoreProps {
+  score?: number,
+  level?: typeof LevelProps[0],
+  describe?: string
+}
+
 /**
  * Set scores inside ref object
  * 
@@ -33,14 +46,24 @@ export function getResultFromScores(
   switch (name) {
     case 'PSS':
       const score: any = Object.values(scores.current).reduce((a: any, b: any) => a + b, 0)
-      console.log(score)
+      var results: ResultScoreProps
       if (score <= 13) {
-        return 0
+        results = {
+          level: LevelProps[0],
+          describe: ''
+        }
       } else if (score > 13 && score <= 26) {
-        return 1
+        results = {
+          level: LevelProps[1]
+        }
       } else {
-        return 2
+        results = {
+          level: LevelProps[2]
+        }
       }
-      break
+
+      results.score = score
+
+      return results
   }
 }

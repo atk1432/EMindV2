@@ -1,4 +1,4 @@
-import { _Container, _Text, _Image, _widthContainer, _padL, _padT, _Layout, _heightStack, _padContainer } from "@/components/ultis";
+import { _Container, _Text, _Image, _widthContainer, _padL, _padT, _Layout, _heightStack, _padContainer, _fontFamilyBold } from "@/components/ultis";
 import { StyleSheet, ViewProps, View, Dimensions, Pressable, ScrollView } from "react-native";
 import { CardNames, Cards, ContentQuestionProps } from "@/components/categories/CardDatas"
 import ButtonNormal from "@/components/buttons/ButtonNormal";
@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useSharedState, useSharedStateTabBar } from "@/hooks/Ultis";
 import { Button } from "react-native-paper";
 import { getResultFromScores, setScoreForQuestion } from "./questionModules";
+import { router } from "expo-router";
 
 
 interface QuestionProps extends ViewProps {
@@ -71,13 +72,25 @@ export default function Question(props: QuestionProps) {
           </_Container>    
         </_Layout>
       )
-    else return (       // Render result screen
+    else {
+      const scores = getResultFromScores(answers, content.name)
+      return (       // Render result screen
       <_Layout>
         <_Container style={ styles.container }>
-          <_Text>{ getResultFromScores(answers, content.name) }</_Text>
+          <_Text style={[ styles.scoreText, { color: scores.level?.color } ]}>
+            { scores.score }
+          </_Text>
+          <_Text style={[ styles.levelText, { color: scores.level?.color }  ]}>
+            { scores.level?.name }
+          </_Text>
+          <ButtonNormal 
+            style={ styles.resultButton }
+            title="Trở lại" 
+            onPress={() => router.back() } 
+          />
         </_Container>
       </_Layout>
-    )
+    )}
   else return (    // Render questions
     <_Layout>
       <_Container style={ styles.container }>
@@ -140,5 +153,20 @@ const styles = StyleSheet.create({
   },
   buttonShowResult: {
     marginTop: 10
+  },
+  scoreText: {
+    fontSize: 40,
+    textAlign: 'center',
+    fontFamily: _fontFamilyBold
+  },
+  levelText: {
+    fontSize: 25,
+    textAlign: 'center',
+    fontFamily: _fontFamilyBold
+  },
+  resultButton: {
+    marginTop: 20,
+    width: 150,
+    alignSelf: 'center'
   }
 })

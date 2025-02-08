@@ -14,6 +14,7 @@ export const _padContainer = 10 // this is paddingLeft and paddingRight of _Cont
 export const _colorBg = '#f5f5f5'  // color background for app
 export const _mainColor = '#db9c60'   // color background for button, tab bar middle button
 export const _widthContainer = Dimensions.get('window').width - 2 * _padL  // width of _Container
+export const _widthContainerWithPad = _widthContainer - 2*_padContainer 
 export const _heightStack = 50
 export const _fontFamily = 'Lexend-Regular'  // main font
 export const _fontFamilyBold = 'Lexend-Bold'  // main font but bold
@@ -87,7 +88,7 @@ export function _Layout(node: _Layout) {
     <SafeAreaView 
       style={ _styles }
     >
-      <ScrollView showsVerticalScrollIndicator>
+      <ScrollView showsVerticalScrollIndicator={ false }>
         <SharedStateProvider>
           { node.children }
         </SharedStateProvider>
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
   },
   layout: {
     paddingTop: _padT,
-    paddingBottom: _padT,
+    paddingBottom: _heightStack + 10,
     paddingLeft: _padL,
     paddingRight: _padL,
     backgroundColor: _colorBg
