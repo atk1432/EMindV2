@@ -1,6 +1,6 @@
 import ButtonNormal from "@/components/buttons/ButtonNormal";
 import { _Layout, _Text } from "@/components/ultis";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { StyleSheet, View, Platform } from "react-native";
 import { Camera, useCameraPermission, useCameraDevice, useCameraFormat, useFrameProcessor } from "react-native-vision-camera"
 import Torch from "react-native-torch"
@@ -10,12 +10,14 @@ import { useSharedValue } from "react-native-worklets-core";
 import { useSharedValue as _useSharedValue } from "react-native-reanimated"
 import { Asset, useAssets } from "expo-asset";
 import { Canvas, Text, matchFont, Fill, Skia } from "@shopify/react-native-skia";
+import axios from 'axios'
 
 
 
 const cameraSize = 300
 
 export default function HeartRateScreen() {
+  const camera = useRef<Camera>(null)
   const [ cameraActive, setCameraActive ] = useState(false)
   const [ assets, error ] = useAssets([require('@/assets/models/test_model.tflite')])
   const device : any = useCameraDevice('back')
@@ -61,12 +63,63 @@ export default function HeartRateScreen() {
 
   }, [])
 
+  const uploadVideo = async (fileUri: string) => {
+    console.log('Upload video...')
+    const formData = new FormData()
+    formData.append('video', {
+      uri: fileUri,
+      name: 'video.mp4',
+      type: 'video/mp4'
+    })
+    console.log(formData)
+    try {
+      const response = await axios.post('http://192.168.0.102/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        timeout: 2000
+      })
+      // const response = await axios.get('https://jsonplaceholder.typicode.com/posts/1');
+      console.log(response)
+    } catch (err : any) {
+      if (err.response) {
+        console.error(err.response.status); // Get the status code on error
+        console.error(`Error: ${err.response.status} - ${err.response.statusText}`);
+      } else {
+        console.error('Network error');
+      }
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
+      if (cameraActive && camera.current) {
+        console.log("Start recording")
+        const video = camera.current.startRecording({
+          onRecordingFinished: (video) => {
+            console.log("Video recorded: ", video.path)
+            const fileUri = video.path
+            uploadVideo(fileUri)
+          },
+          onRecordingError: (error) => {
+            console.error('Recording error: ', error)
+          }
+        })
+      } else {
+        console.log("Stop recording")
+        if (camera.current)
+          await camera.current.stopRecording();
+      }
+    })()
+  }, [cameraActive])
+
 
   return (
     <_Layout size="full" style={ styles.layout }>
       <View style={ styles.camera }>
         { hasPermission ? 
           <Camera 
+            ref={ camera }
             format={ lowResolutionFormat }
             frameProcessor={ frameProcessor }
             torch="on"
@@ -74,6 +127,7 @@ export default function HeartRateScreen() {
             style={[ styles._camera, StyleSheet.absoluteFill ]}
             device={ device }
             isActive={ cameraActive }
+            video={ true }
           /> 
         : "" }
       </View>
@@ -88,15 +142,14 @@ export default function HeartRateScreen() {
       </Canvas>
       <ButtonNormal 
         style={ styles.button }
-        onPress={ () => {
+        onPress={ async () => {
           if (!hasPermission) {
             requestPermission() 
           } else {
             setCameraActive(!cameraActive) 
-            Torch.switchState(cameraActive)
           }
         }}
-        title={ !cameraActive ? "Bật cameda" : "Tắt camera" }
+        title={ !cameraActive ? "Bật camera" : "Tắt camera" }
       />
     </_Layout>
   )
