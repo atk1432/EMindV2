@@ -65,22 +65,22 @@ export default function HeartRateScreen() {
 
   const uploadVideo = async (fileUri: string) => {
     console.log('Upload video...')
-    const formData = new FormData()
-    formData.append('video', {
-      uri: fileUri,
-      name: 'video.mp4',
-      type: 'video/mp4'
-    })
-    console.log(formData)
     try {
-      const response = await axios.post('http://192.168.0.102/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        timeout: 2000
-      })
-      // const response = await axios.get('https://jsonplaceholder.typicode.com/posts/1');
-      console.log(response)
+      // const response = await axios.post('http://192.168.0.107:5000/upload', formData, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data'
+      //   },
+      // })
+      const response = await axios.postForm(
+        'http://192.168.0.107:5000/u', 
+        {
+          fileUri: fileUri,
+          file: fileUri,
+          type: 'video/h264',
+          name: 'test'
+        }, 
+      );
+      console.log(response.data)
     } catch (err : any) {
       if (err.response) {
         console.error(err.response.status); // Get the status code on error
