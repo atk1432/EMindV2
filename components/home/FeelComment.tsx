@@ -5,6 +5,7 @@ import { Emotions } from "./EmotionData";
 import Animated, { FadeIn, useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 import React, { useEffect } from "react";
 
+
 const thinkImg = require("@/assets/images/howfeel/emotion_reaction.jpg")
 
 export default function FeelComment() {

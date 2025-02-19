@@ -21,3 +21,8 @@ export const Emotions = [
     img: require("@/assets/images/howfeel/smile2.jpg")
   }
 ]
+
+export interface EmotionsStorage {
+  time: number,
+  index: number
+}

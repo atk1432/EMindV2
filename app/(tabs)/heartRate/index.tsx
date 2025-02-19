@@ -10,6 +10,7 @@ import { useSharedValue } from "react-native-worklets-core";
 import { useSharedValue as _useSharedValue } from "react-native-reanimated"
 import { Asset, useAssets } from "expo-asset";
 import { Canvas, Text, matchFont, Fill, Skia } from "@shopify/react-native-skia";
+import * as FileSystem from 'expo-file-system';
 import axios from 'axios'
 
 
@@ -41,10 +42,6 @@ export default function HeartRateScreen() {
   // Plugins
   const { resize } = useResizePlugin()
 
-  // Models
-  // const plugin = useTensorflowModel(require('@/assets/models/test_model.tflite'))
-  // const model = plugin.state === "loaded" ? plugin.model : undefined
-
   const frameProcessor = useFrameProcessor((frame) => {
     'worklet'
     // if (model == null) return
@@ -58,36 +55,42 @@ export default function HeartRateScreen() {
       dataType: "uint8",
     })
 
-    // const outputs: any = model?.runSync([resized])
-    // rgbMeans.value = outputs[0][0]
-
   }, [])
 
   const uploadVideo = async (fileUri: string) => {
-    console.log('Upload video...')
+    console.log('Upload video.......')
+
+    // Upload video file start
+    const formData = new FormData();
+    formData.append('file', {
+      uri: fileUri,
+      name: 'video.mov',
+      type: 'video/quicktime', // Correct MIME type
+    });
+
     try {
-      // const response = await axios.post('http://192.168.0.107:5000/upload', formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data'
-      //   },
-      // })
-      const response = await axios.postForm(
-        'http://192.168.0.107:5000/u', 
-        {
-          fileUri: fileUri,
-          file: fileUri,
-          type: 'video/h264',
-          name: 'test'
-        }, 
-      );
-      console.log(response.data)
-    } catch (err : any) {
-      if (err.response) {
-        console.error(err.response.status); // Get the status code on error
-        console.error(`Error: ${err.response.status} - ${err.response.statusText}`);
-      } else {
-        console.error('Network error');
-      }
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://192.168.6.110:5000/u', true);
+      xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+      
+      xhr.onload = async () => {
+        if (xhr.status === 200) {
+          console.log('Upload success:', xhr.responseText);
+          // Try delete file 
+          await FileSystem.deleteAsync(fileUri!)
+          console.log('Delete file successfully!')
+        } else {
+          console.error('Upload failed:', xhr.responseText);
+        }
+      };
+  
+      xhr.onerror = function () {
+        console.error('Upload error');
+      };
+  
+      xhr.send(formData);
+    } catch (error) {
+      console.error('Upload error:', error);
     }
   }
 
@@ -99,16 +102,17 @@ export default function HeartRateScreen() {
           onRecordingFinished: (video) => {
             console.log("Video recorded: ", video.path)
             const fileUri = video.path
-            uploadVideo(fileUri)
+            uploadVideo('file://' +  fileUri)
           },
           onRecordingError: (error) => {
             console.error('Recording error: ', error)
           }
         })
       } else {
-        console.log("Stop recording")
-        if (camera.current)
+        if (camera.current) {
           await camera.current.stopRecording();
+          console.log("Stop recording")
+        }
       }
     })()
   }, [cameraActive])
@@ -123,7 +127,7 @@ export default function HeartRateScreen() {
             format={ lowResolutionFormat }
             frameProcessor={ frameProcessor }
             torch="on"
-            fps={ 10 }
+            fps={ 30 }
             style={[ styles._camera, StyleSheet.absoluteFill ]}
             device={ device }
             isActive={ cameraActive }
@@ -131,7 +135,6 @@ export default function HeartRateScreen() {
           /> 
         : "" }
       </View>
-      <_Text>Red: { rgbMeans.value }</_Text>
       <Canvas>
         <Text 
           x={0}
