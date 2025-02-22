@@ -17,6 +17,7 @@ export default function TabBar(props: BottomTabBarProps) {
     size: number
   } 
 
+  // Make tabbar disappear when user is focusing in categories
   const { state, setState } = useSharedStateTabBar()
   
   return (

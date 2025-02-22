@@ -1,12 +1,28 @@
 import { PieChart, BarChart } from "react-native-chart-kit"
-import { _Container, _padContainer, _padL, _widthContainer, _widthContainerWithPad, _ContainerWithTitle } from "../ultis";
+import { _Container, _padContainer, _padL, _widthContainer, _widthContainerWithPad, _ContainerWithTitle, getDataFromStorage } from "../ultis";
+import { Emotions, EmotionsStorage } from "../home/EmotionData";
 
 
 const data = {
-  labels: ["January", "February", "March", "April", "May", "June"],
+  labels: Emotions.map(emotion => emotion.icon),
   datasets: [
     {
-      data: [20, 45, 28, 80, 99, 43]
+      data: (() => {
+        const result = [0, 0, 0, 0, 0]
+        var emotions: EmotionsStorage[]
+        (async () => {
+          emotions = (await getDataFromStorage<EmotionsStorage[]>('emotions'))!
+          if (emotions) {
+            emotions.map((emotion, index) => {
+              result[emotion.index] += 1
+            })
+          }
+        })()
+
+        // result = [0, 0, 0, 0, 0]
+        // console.log(result)
+        return result
+      })()
     }
   ]
 };
@@ -18,9 +34,15 @@ const chartConfig = {
   backgroundGradientToOpacity: 0.5,
   backgroundColor: "white",
   color: (opacity = 1) => `rgba(0, 0, 146, ${opacity})`,
-  strokeWidth: 2, // optional, default 3
+  strokeWidth: 5, // optional, default 3
   barPercentage: 0.5,
-  useShadowColorFromDataset: false // optional
+  useShadowColorFromDataset: false, // optional,
+  propsForLabels: {
+    fontSize: 18, // 👈 Adjust font size here
+    fontWeight: "bold"
+  },
+  decimalPlaces: 0,
+  fromZero: true
 };
 
 export default function Chart() {
@@ -28,12 +50,14 @@ export default function Chart() {
     <_ContainerWithTitle title="Thông số">
       <BarChart
         yAxisSuffix=""
+        yAxisLabel=""
+        yLabelsOffset={15}
+        // withHorizontalLabels={false}
         data={data}
         width={_widthContainerWithPad}
         height={220}
-        yAxisLabel="$"
         chartConfig={chartConfig}
-        verticalLabelRotation={30}
+        showValuesOnTopOfBars={true}
       />
     </_ContainerWithTitle>
   )

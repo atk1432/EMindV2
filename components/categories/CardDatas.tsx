@@ -1,4 +1,4 @@
-export type CardNames = "PSS"
+export type CardNames = "PSS" | "HLL"
 
 export interface ContentQuestionProps {
   describe?: string,
@@ -22,10 +22,10 @@ export const Cards : CardsProp[] = [
   {
     type: "questions",
     name: "PSS",
-    title: "Câu hỏi đánh giá stress (PSS-10)",
+    title: "Câu hỏi đánh giá stress",
     content: {
       name: "PSS",
-      describe: "PSS-10 là công cụ để đánh giá stress",
+      describe: "PSS-10 (Perceived Stress Scale - 10 items) là một công cụ đo lường mức độ căng thẳng được cảm nhận trong cuộc sống hàng ngày. Nó được phát triển bởi Sheldon Cohen và đồng nghiệp vào năm 1983 và được sử dụng rộng rãi trong nghiên cứu tâm lý học để đánh giá mức độ căng thẳng chủ quan của một người trong khoảng 1 tháng qua",
       image: require("@/assets/images/contents/stress.jpg"),
       questions: [
         "Cảm thấy khó chịu vì những điều bất ngờ xảy ra trong cuộc sống?",
@@ -50,3 +50,8 @@ export const Cards : CardsProp[] = [
     image: require("@/assets/images/categories/stress.jpg")
   }
 ] 
+
+export interface ScoresStorage {
+  name: CardNames,
+  score: number
+} 

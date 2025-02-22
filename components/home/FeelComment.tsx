@@ -19,7 +19,6 @@ export default function FeelComment() {
     // }
   }, [])
 
-
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value
   }))
@@ -36,11 +35,9 @@ export default function FeelComment() {
       </View>
       { state === -1 ?
         <Animated.Image source={ thinkImg } style={[ styles.image, animatedStyle ]} resizeMode="cover" /> :
-        <Animated.Image
-          entering={ FadeIn }
+        <_Image 
+          style={ styles.image }
           source={ Emotions[state].img } 
-          style={[ styles.image ]} 
-          resizeMode="cover" 
         />
       } 
     </_Container>

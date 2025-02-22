@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font'
 import { Link, LinkProps, SplashScreen } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SharedStateProvider } from "@/hooks/Ultis";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import React from "react";
 
 
@@ -114,6 +115,23 @@ export function _ContainerWithTitle(node: _Container) {
     </View>
   </>
   )
+}
+
+
+/**
+ * Get data from AsyncStorage, check data is not null then use JSON to parse it.
+ * @param name Name of data
+ * @param callback Callback to execute
+ */
+export async function getDataFromStorage<T = any>
+  (name: "emotions" |  "scores", callback: any = null): Promise<T | undefined> 
+{
+  var data = await AsyncStorage.getItem(name)
+  if (data) {
+    data = JSON.parse(data)
+    if (callback) callback()
+    return data as T
+  }
 }
 
 const styles = StyleSheet.create({

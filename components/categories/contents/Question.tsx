@@ -1,4 +1,4 @@
-import { _Container, _Text, _Image, _widthContainer, _padL, _padT, _Layout, _heightStack, _padContainer, _fontFamilyBold } from "@/components/ultis";
+import { _Container, _Text, _Image, _widthContainer, _padL, _padT, _Layout, _heightStack, _padContainer, _fontFamilyBold, _widthContainerWithPad } from "@/components/ultis";
 import { StyleSheet, ViewProps, View, Dimensions, Pressable, ScrollView } from "react-native";
 import { CardNames, Cards, ContentQuestionProps } from "@/components/categories/CardDatas"
 import ButtonNormal from "@/components/buttons/ButtonNormal";
@@ -61,10 +61,12 @@ export default function Question(props: QuestionProps) {
       return (
         <_Layout>
           <_Container style={ styles.container }>
+            <_Text style={ styles.titleStart }>{ content.name }</_Text>
             <_Image source={ content.image } style={ styles.image } />
-            <_Text>{ content.describe }</_Text>
+            <_Text style={ styles.describeText }>{ content.describe }</_Text>
             <ButtonNormal 
               title="Bắt đầu" 
+              style={ styles.buttonStart }
               onPress={() => {
                 setStart(true); 
               }} 
@@ -73,7 +75,7 @@ export default function Question(props: QuestionProps) {
         </_Layout>
       )
     else {
-      const scores = getResultFromScores(answers, content.name)
+      const scores = getResultFromScores(answers, content.name)!
       return (       // Render result screen
       <_Layout>
         <_Container style={ styles.container }>
@@ -124,7 +126,9 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height - _heightStack - 50,
   },
   image: {
-    width: _widthContainer - 2*_padContainer,
+    width: _widthContainerWithPad,
+    height: 200,
+    alignSelf: 'center',
     borderRadius: 10,
   },
   questionView: {
@@ -135,6 +139,21 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
     zIndex: 2,
     elevation: 1,
+  },
+  describeText: {
+    // fontSize: 20,
+    marginTop: 20,
+    marginBottom: 20
+  },
+  titleStart: {
+    fontFamily: _fontFamilyBold,
+    fontSize: 26,
+    marginBottom: 20,
+    textAlign: 'center'
+  },
+  buttonStart: {
+    width: 200,
+    alignSelf: 'center'
   },
   questionText: {
 

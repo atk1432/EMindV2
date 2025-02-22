@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, View } from "react-native"
-import { _Text, _Container, _Image, _widthContainer } from "../ultis"
-import { useState } from "react"
+import { _Text, _Container, _Image, _widthContainer, getDataFromStorage } from "../ultis"
+import { useEffect, useState } from "react"
 import { useSharedState } from "@/hooks/Ultis"
 import { Emotions, EmotionsStorage } from "./EmotionData"
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -27,6 +27,16 @@ function isSameDay(timestamp1: number, timestamp2: number) {
 export default function HowFeel() {
   const { state, setState } = useSharedState()
 
+  useEffect(() => {
+    (async () => {
+      const data = await getDataFromStorage<EmotionsStorage[]>('emotions')
+      if (data)  
+        if (isSameDay(data.at(-1)?.time!, Date.now())) {
+          setState(data.at(-1)?.index!)
+        } 
+    })()
+  }, [])
+
   return (
     <_Container style={ styles.container }>
       <_Text>Bạn cảm thấy như thế nào hôm nay?</_Text>
@@ -40,14 +50,15 @@ export default function HowFeel() {
             
               if (emotions) {
                 data = JSON.parse(emotions!)
-                if (isSameDay(data.at(-1)?.time!, Date.now()))
+                if (isSameDay(data.at(-1)?.time!, Date.now())) {
                   data[data.length - 1].time = Date.now()
-                else
+                  data[data.length - 1].index = index
+                } else
                   data.push({ time: Date.now(), index })
               } else {
                 data.push({ time: Date.now(), index })
               }
-
+              
               await AsyncStorage.setItem('emotions', JSON.stringify(data))
               setState(index)
 
