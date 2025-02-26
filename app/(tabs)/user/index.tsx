@@ -12,7 +12,7 @@ export default function UserScreen() {
         title="Upload"
         onPress={async () => {
           const data = JSON.parse((await AsyncStorage.getItem('emotions'))!)
-          data.map((e: EmotionsStorage) => console.log(new Date(e.time).toString(), ))
+          data.map((e: EmotionsStorage) => console.log(e))
         }}
       />
     </_Layout>
