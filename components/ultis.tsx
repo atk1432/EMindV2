@@ -120,6 +120,11 @@ export function _ContainerWithTitle(node: _Container) {
 
 /**
  * Get data from AsyncStorage, check data is not null then use JSON to parse it.
+ * @example 
+ *  const data = await getDataFromStorage('emotions')
+ *  if (data) { 
+ *    // code is here 
+ *  }        
  * @param name Name of data
  * @param callback Callback to execute
  */

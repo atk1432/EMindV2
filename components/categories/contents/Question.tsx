@@ -1,6 +1,6 @@
-import { _Container, _Text, _Image, _widthContainer, _padL, _padT, _Layout, _heightStack, _padContainer, _fontFamilyBold, _widthContainerWithPad } from "@/components/ultis";
+import { _Container, _Text, _Image, _widthContainer, _padL, _padT, _Layout, _heightStack, _padContainer, _fontFamilyBold, _widthContainerWithPad, getDataFromStorage } from "@/components/ultis";
 import { StyleSheet, ViewProps, View, Dimensions, Pressable, ScrollView } from "react-native";
-import { CardNames, Cards, ContentQuestionProps } from "@/components/categories/CardDatas"
+import { CardNames, Cards, ContentQuestionProps, ScoresStorage } from "@/components/categories/CardDatas"
 import ButtonNormal from "@/components/buttons/ButtonNormal";
 import React, { memo, useEffect, useRef } from "react";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import { useSharedState, useSharedStateTabBar } from "@/hooks/Ultis";
 import { Button } from "react-native-paper";
 import { getResultFromScores, setScoreForQuestion } from "./questionModules";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 interface QuestionProps extends ViewProps {
@@ -20,6 +21,7 @@ interface AnswerProps extends ViewProps {
   name: CardNames,
   refAnswers: React.MutableRefObject<{}>
 }
+
 
 const Answer = memo((props: AnswerProps) => {
   const [ focus, setFocus ] = useState<number | undefined>()
@@ -41,8 +43,16 @@ const Answer = memo((props: AnswerProps) => {
   )
 })
 
+/**
+ * - This is component which render questions. 
+ * - Its include begin, middle and end.
+ */
 export default function Question(props: QuestionProps) {
-  const content = props.content
+
+  // content variable is using for access card like name, questions, answers, image, describe,...
+  const content = props.content    
+
+
   const [ start, setStart ] = useState(false)
   const [ showResult, setShowResult ] = useState(false)
   const { state, setState } = useSharedStateTabBar()
@@ -75,15 +85,38 @@ export default function Question(props: QuestionProps) {
         </_Layout>
       )
     else {
-      const scores = getResultFromScores(answers, content.name)!
+      const score = getResultFromScores(answers, content.name)!;
+      (async () => {
+        // Get scores from AsyncStorage
+        const scores = await getDataFromStorage<ScoresStorage[]>("scores")
+
+        if (!scores) {
+          const data: ScoresStorage[] = [
+            { name: content.name, score: score.score! }
+          ] 
+          await AsyncStorage.setItem("scores", JSON.stringify(data))
+          console.log("Scores is stored successfully!!!")
+        } else {
+          scores.map(async (s, i) => {
+            if (s.name === content.name) {
+              scores[i].score = score.score!
+              await AsyncStorage.setItem("scores", JSON.stringify(scores))
+              return
+            }
+          })
+          console.log("Scores is modified successfully!!!")
+        }
+      })()
+
+
       return (       // Render result screen
       <_Layout>
         <_Container style={ styles.container }>
-          <_Text style={[ styles.scoreText, { color: scores.level?.color } ]}>
-            { scores.score }
+          <_Text style={[ styles.scoreText, { color: score.level?.color } ]}>
+            { score.score }
           </_Text>
-          <_Text style={[ styles.levelText, { color: scores.level?.color }  ]}>
-            { scores.level?.name }
+          <_Text style={[ styles.levelText, { color: score.level?.color }  ]}>
+            { score.level?.name }
           </_Text>
           <ButtonNormal 
             style={ styles.resultButton }

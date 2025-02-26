@@ -11,6 +11,8 @@ import React from "react";
 // get 'slug', filter Cards and show card content 
 export default function ContentScreen() {
   const { slug } = useLocalSearchParams()   // slug only integer
+
+  // filter Card by using id 
   const card = Cards.filter(card => card.name === slug)[0]
 
   return (

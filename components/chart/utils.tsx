@@ -53,9 +53,9 @@ export const PieChart: React.FC<PieChartProps> = ({ widthSvg, heightSvg, centerX
           const percentage = ((item.value / total) * 100).toFixed(1) + '%';
 
           return (
-            <View key={index}>
+            // <View key={index}>
               <Path key={index} d={pathData} fill={item.color} stroke="#fff" strokeWidth="2" />
-              <SvgText
+            /* <SvgText
                 key={`text-${index}`}
                 x={textX}
                 y={textY}
@@ -66,8 +66,8 @@ export const PieChart: React.FC<PieChartProps> = ({ widthSvg, heightSvg, centerX
                 alignmentBaseline="middle"
               >
                 {percentage}
-              </SvgText>
-            </View>
+              </SvgText> */
+            // </View>
           );
         })}
       </Svg>

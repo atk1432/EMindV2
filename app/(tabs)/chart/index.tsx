@@ -14,6 +14,6 @@ export default function ChartScreen() {
 
 const styles = StyleSheet.create({
   layout: {
-    marginBottom: 40
+    // marginBottom: 40
   }
 })

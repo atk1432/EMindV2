@@ -11,7 +11,7 @@ export default function UserScreen() {
       <ButtonNormal 
         title="Upload"
         onPress={async () => {
-          const data = JSON.parse((await AsyncStorage.getItem('emotions'))!)
+          const data = JSON.parse((await AsyncStorage.getItem('scores'))!)
           data.map((e: EmotionsStorage) => console.log(e))
         }}
       />

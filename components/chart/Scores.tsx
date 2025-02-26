@@ -7,10 +7,15 @@ interface ScoreProps extends ViewProps {
   score: number
 }
 
+const getRandom = <T,>(arr: T[]) => (arr[Math.floor(Math.random() * arr.length)]);
 
 const Score = (props: ScoreProps) => {
+  const color = getRandom(
+    ['#od3d56', '#1287a8', '#829356', '#bca136', '#c2571a', '#ad2a1a',
+      '#3c6478', '#43abc9', '#a3b86c', '#c02f1d', '#d3b53d', '#ebc944'
+    ])
   return (
-    <View style={ styles.scoreView }>
+    <View style={[ styles.scoreView, { backgroundColor: color } ]}>
       <_Text style={[ styles.scoreText, styles.name ]}>{ props.name }</_Text>
       <_Text style={[ styles.scoreText, styles.score ]}>{ props.score }</_Text>
     </View> 
@@ -46,12 +51,10 @@ export default function Scores() {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    // height: 300,
+    marginBottom: 30
   },
   scrollView: {
     width: _widthContainerWithPad,
-    // height: 300,
-    // flexDirection: 'row'
   },
   scoreView: {
     width: 100,
@@ -60,13 +63,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#669900',
+    // backgroundColor: '#f6f8f9',
     marginLeft: 5,
-    marginRight: 5
+    marginRight: 5,
+    marginTop: 5,
+    marginBottom: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   scoreText: {
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
   },
   name: {
     position: 'absolute',

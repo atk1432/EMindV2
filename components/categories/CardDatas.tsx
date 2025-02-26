@@ -1,4 +1,4 @@
-export type CardNames = "PSS" | "HLL"
+export type CardNames = "PSS" | "HLL" | "PHQ-9"
 
 export interface ContentQuestionProps {
   describe?: string,
@@ -48,6 +48,35 @@ export const Cards : CardsProp[] = [
       ]
     },
     image: require("@/assets/images/categories/stress.jpg")
+  },
+  {
+    type: "questions",
+    name: "PHQ-9",
+    title: "Câu hỏi đánh giá mức độ trầm cảm",
+    content: {
+      name: "PHQ-9",
+      describe: "PHQ-9 là một bảng câu hỏi gồm 9 mục, được sử dụng để sàng lọc và đánh giá mức độ trầm cảm",
+      image: require("@/assets/images/contents/depression.jpg"),
+      questions: [
+        "Bạn có ít hứng thú hoặc niềm vui trong các hoạt động không?",
+        "Bạn có cảm thấy buồn bã, chán nản hoặc tuyệt vọng không?",
+        "Bạn có gặp khó khăn khi ngủ, ngủ quá nhiều hoặc mất ngủ không?",
+        "Bạn có cảm thấy mệt mỏi hoặc thiếu năng lượng không?",
+        "Bạn có chán ăn hoặc ăn quá nhiều không?",
+        "Bạn có cảm thấy mình là người tệ hại, thất bại, hoặc làm thất vọng bản thân và gia đình không?",
+        "Bạn có gặp khó khăn trong việc tập trung, chẳng hạn như khi đọc báo hoặc xem TV không?",
+        "Bạn có cảm thấy chậm chạp, nói hoặc di chuyển chậm hơn bình thường, hoặc ngược lại, bồn chồn và di chuyển nhiều hơn bình thường không?",
+        "Bạn có suy nghĩ rằng mình muốn làm hại bản thân hoặc nghĩ rằng sẽ tốt hơn nếu mình không tồn tại không?",
+      ],
+      answers: [
+        "Không hoặc rất nhẹ",
+        "Nhẹ",
+        "Trung bình",
+        "Nặng vừa",
+        "Nặng"
+      ]
+    },
+    image: require("@/assets/images/categories/depression.jpg")
   }
 ] 
 

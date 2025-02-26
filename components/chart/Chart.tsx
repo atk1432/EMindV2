@@ -25,6 +25,11 @@ const chartConfig = {
   fromZero: true
 };
 
+function areArraysEqual<T>(arr1: T[], arr2: T[]): boolean {
+  if (arr1.length !== arr2.length) return false;
+  return arr1.every((value, index) => value === arr2[index]);
+}
+
 export default function Chart() {
   const [ data, setData ] = useState([0, 0, 0, 0, 0])
   const getEmotions = async () => {
@@ -36,7 +41,13 @@ export default function Chart() {
         result[emotion.index] += 1
       })
     }
-    setData(result)
+
+    if (!areArraysEqual(data, result)) {
+      console.log('not equal')
+      setData(result)
+    } else {
+      console.log('equal')
+    } 
   }
   
   useFocusEffect(() => {
